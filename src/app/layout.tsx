@@ -6,7 +6,6 @@ import { Toaster } from '@/components/ui/Toaster'
 
 export const metadata = {
   title: 'College-Connect',
-  description: 'A Reddit clone built with Next.js and TypeScript.',
 }
 
 const inter = Inter({
@@ -15,8 +14,10 @@ const inter = Inter({
 
 export default function RootLayout({
   children,
+  authModal,
 }: {
   children: React.ReactNode
+  authModal: React.ReactNode
 }) {
   return (
     <html
@@ -26,7 +27,9 @@ export default function RootLayout({
        inter.className
        )}>
       <body className='min-h-screen pt-12 bg-slate-50 antiliased'>
+        {/* @ts-expect-error Server Component */}
         <Navbar />
+        {authModal}
         <div className='container max-w-7xl mx-auto h-full pt-12'></div>
       {children}
       <Toaster />

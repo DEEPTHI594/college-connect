@@ -1,9 +1,12 @@
+
 import Link from "next/link";
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "./ui/Button";
+import UserAccountNav from "@/components/UserAccountNav"; // Adjusted to the correct relative path
 import { getAuthSession } from "@/lib/auth";
 
-const Navbar = async() => {
+
+const Navbar =  async() => {
     const session = await getAuthSession()
     return(
          <div className="fixed top-0 inset-x-0 h-fit bg-zinc-100 border-b border-zinc-300 z-[10] py-2">
@@ -16,8 +19,8 @@ const Navbar = async() => {
             </Link>
 
             {/* {search bar} */}
-            {session ? (
-                <p>you're logged in</p>
+            {session?.user ? (
+                <UserAccountNav user={session.user} />
             ):(
             <Link href='/sign-in' className={buttonVariants()}>Sign In</Link>
             )}

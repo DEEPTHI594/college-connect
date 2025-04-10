@@ -1,8 +1,8 @@
 
 import { User } from 'lucide-react'
-import { Icons } from '../Icons'
+import { Icons } from './Icons'
 import Link from 'next/link'
-import UserAuthForm from '../UserAuthForm'
+import UserAuthForm from './UserAuthForm'
 
 
 const SignIn = () => {
