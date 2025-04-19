@@ -46,7 +46,15 @@ const Page: FC = () => {
             return loginToast()
             }
     }
-     }
+    toast ({
+        title:'There was an error',
+        description: 'CPuld not create subthread',
+        variant: 'destructive',
+    })
+     },
+     onSuccess: (data) => {
+        router.push(`/r/${data}`)
+     },
 })
 
     return <div className='container mx-auto flex flex-col items-center justify-center h-screen'>
@@ -74,7 +82,7 @@ const Page: FC = () => {
             </Button>
             <Button isLoading={isLoading}
              disabled={input.length === 0} 
-             onClick={( ) => createcommunity}>Create Community</Button>
+             onClick={() => createcommunity()}>Create Community</Button>
             </div>
 
         </div>
