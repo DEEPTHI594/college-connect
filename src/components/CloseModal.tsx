@@ -2,7 +2,7 @@
 import { FC } from 'react'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 
 const CloseModal = ( ) => {

@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import { Toaster } from '@/components/ui/Toaster'
+import Providers from '@/components/ui/Providers'
 
 export const metadata = {
   title: 'College-Connect',
@@ -27,12 +28,14 @@ export default function RootLayout({
        inter.className
        )}>
       <body className='min-h-screen pt-12 bg-slate-50 antiliased'>
+        <Providers>
         {/* @ts-expect-error Server Component */}
         <Navbar />
         {authModal}
         <div className='container max-w-7xl mx-auto h-full pt-12'></div>
       {children}
       <Toaster />
+      </Providers>
       </body>
     </html>
   )
