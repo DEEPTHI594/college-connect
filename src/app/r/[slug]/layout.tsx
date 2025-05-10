@@ -2,6 +2,7 @@ import {getAuthSession} from "@/lib/auth"
 import {db} from "@/lib/db"
 import {notFound} from "next/navigation"
 import {format} from "date-fns"
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle" 
 
 
 const Layout = async ( {
@@ -81,6 +82,9 @@ params :{slug:string}
                                 <p className="text-gray-500"> You created this community</p>
                             </div>
                         ):null}
+                        {subthread.creatorId !== session?.user.id ? (
+                            <SubscribeLeaveToggle />
+                            ) : null}
                          </dl>
                         </div>
                     </div>
