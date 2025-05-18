@@ -5,16 +5,14 @@ import { User } from 'next-auth'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/DropdownMenu'
 import {UserAvatar} from './UserAvatar'
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu'
+import { signOut } from 'next-auth/react'
 
 interface UserAccountNavProps {
   user: Pick<User , 'name' | 'image' | 'email' >
 }
 
 const UserAccountNav: FC<UserAccountNavProps> = ({user}) => {
-    function signOut(arg0: { callbackUrl: string }) {
-        throw new Error('Function not implemented.')
-    }
-
+    
   return (
   <DropdownMenu>
     <DropdownMenuTrigger>
@@ -45,13 +43,15 @@ const UserAccountNav: FC<UserAccountNavProps> = ({user}) => {
             <Link href='/settings'>Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={(event)=>{
+        <DropdownMenuItem 
+        className='cursor-pointer'
+        onSelect={(event)=>{
             event.preventDefault()
             signOut({
                 callbackUrl: `${window.location.origin}/sign-in`,
 
             })
-        }} className='cursor-pointer '>
+        }} >
             Sign Out
         </DropdownMenuItem>
            

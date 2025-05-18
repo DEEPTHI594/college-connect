@@ -10,4 +10,4 @@ export const SubthreadSubscriptionValidator = z.object({
 
 
 export type CreateSubthreadPayload = z.infer<typeof SubthreadValidator>;
-export type SubthreadSubscriptionPayload = z.infer<typeof SubthreadSubscriptionValidator>;
+export type SubscribeToSubthreadPayload  = z.infer<typeof SubthreadSubscriptionValidator>;

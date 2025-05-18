@@ -18,6 +18,6 @@ export const loginToast = () => {
     });
 };
 
-export const useCustomToast = () => {
+export const useCustomToasts = () => {
     return { loginToast };
 };

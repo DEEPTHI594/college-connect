@@ -83,7 +83,10 @@ params :{slug:string}
                             </div>
                         ):null}
                         {subthread.creatorId !== session?.user.id ? (
-                            <SubscribeLeaveToggle />
+                            <SubscribeLeaveToggle 
+                            isSubscribed={isSubscribed}
+                            subthreadId={subthread.id} 
+                            subthreadName={subthread.name}/>
                             ) : null}
                          </dl>
                         </div>

@@ -8,13 +8,13 @@ import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { CreateSubthreadPayload } from "@/lib/validators/subthread";
 import { toast } from "@/components/ui/use-toast";
-import { useCustomToast } from "@/hooks/use-custom-toast";
+import { useCustomToasts } from "@/hooks/use-custom-toasts";
 import { FC } from "react";
 
 const Page: FC = () => {
     const router = useRouter()
     const[input, setInput] = useState<string>('')
-    const {loginToast} = useCustomToast()
+    const {loginToast} = useCustomToasts()
     
     const {mutate: createcommunity, isLoading} = useMutation({
         mutationFn: async () => {

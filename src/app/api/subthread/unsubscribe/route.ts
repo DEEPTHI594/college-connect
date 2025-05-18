@@ -19,13 +19,24 @@ export async function POST(req: Request) {
                 userId: session.user.id,
                 },
         })
-        if(subscriptionExists) {
-            return new Response("You are already subscribed to this subthread", {status: 400})
+        if(!subscriptionExists) {
+            return new Response("You are not subscribed to this subthread", {status: 400})
         }
-        await db.subscription.create({
-            data: {
-                subthreadId,
-                userId: session.user.id,
+        const subthread = await db.subthread.findFirst({
+            where: {
+                id: subthreadId,
+                creatorId: session.user.id,
+            },
+        })
+        if(subthread) {
+            return new Response("You cannot unsubscribe from your own subthread", {status: 400})
+        }   
+        await db.subscription.delete({
+            where: {
+                userId_subthreadId: {
+                    subthreadId,
+                    userId: session.user.id,
+                },
             },
         })
         return new Response(subthreadId)
@@ -35,6 +46,6 @@ export async function POST(req: Request) {
             return new Response('Invalid request data passed', { status: 422 });
           }
         
-          return new Response("Could not subscribe,please try again later ", { status: 500 });
+          return new Response("Could not unsubscribe,please try again later ", { status: 500 });
     }
 }
