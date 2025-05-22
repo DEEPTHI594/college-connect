@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import Image from "next/image";
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "./ui/Button";
 import UserAccountNav from "@/components/UserAccountNav"; // Adjusted to the correct relative path
@@ -14,7 +15,7 @@ const Navbar =  async() => {
 
             {/* {logo} */}
             <Link href='/' className="flex gap-2 items-center">
-            <Icons.logo className="h-8 w-8 sm:h-6 sm:w-6" />
+            <Image src="/favicon.ico" alt="Logo" width={40} height={40} />
             <p className="hidden text-zinc-700 text-sm font-medium md:block">College-Connect</p>
             </Link>
 
