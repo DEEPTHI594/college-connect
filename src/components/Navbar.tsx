@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "./ui/Button";
-import UserAccountNav from "@/components/UserAccountNav"; // Adjusted to the correct relative path
+import UserAccountNav from "@/components/UserAccountNav"; 
 import { getAuthSession } from "@/lib/auth";
+import SearchBar from "@/components/SearchBar"; 
 
 
 const Navbar =  async() => {
@@ -20,6 +21,7 @@ const Navbar =  async() => {
             </Link>
 
             {/* {search bar} */}
+            <SearchBar />
             {session?.user ? (
                 <UserAccountNav user={session.user} />
             ):(
