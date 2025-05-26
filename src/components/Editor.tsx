@@ -81,6 +81,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
     const LinkTool = (await import('@editorjs/link')).default
     const InlineCode = (await import('@editorjs/inline-code')).default
     const ImageTool = (await import('@editorjs/image')).default
+    const Attaches = (await import('@editorjs/attaches')).default
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -104,9 +105,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
             config: {
               uploader: {
                 async uploadByFile(file: File) {
-                  // upload to uploadthing
                   const [res] = await uploadFiles('imageUploader', { files: [file] })
-
                   return {
                     success: 1,
                     file: {
@@ -122,6 +121,34 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
           inlineCode: InlineCode,
           table: Table,
           embed: Embed,
+          attaches: {
+            class: Attaches,
+            config: {
+              uploader: {
+                async uploadByFile(file: File) {
+                  const [res] = await uploadFiles('documentUploader', { files: [file] })
+                  return {
+                    success: 1,
+                    file: {
+                      url: res.url,
+                      name: file.name,
+                      size: file.size,
+                    },
+                  }
+                },
+                async uploadByUrl(url: string) {
+                  // Optional, if you want to allow URL-based uploads
+                  return {
+                    success: 1,
+                    file: {
+                      url,
+                      name: url.split('/').pop() ?? 'Document',
+                    },
+                  }
+                },
+              },
+            },
+          },
         },
       })
     }

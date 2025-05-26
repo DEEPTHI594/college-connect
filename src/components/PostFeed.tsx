@@ -1,6 +1,5 @@
 'use client'
 
-
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from '@/config'
 import { ExtendedPost } from '@/types/db'
 import { useIntersection } from '@mantine/hooks'
@@ -22,11 +21,12 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subthreadName }) => {
     root: lastPostRef.current,
     threshold: 1,
   })
+
   const { data: session } = useSession()
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['infinite-query'],
-    async ({ pageParam = 1 }) => {
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['infinite-query', subthreadName],
+    queryFn: async ({ pageParam = 1 }) => {
       const query =
         `/api/posts?limit=${INFINITE_SCROLLING_PAGINATION_RESULTS}&page=${pageParam}` +
         (!!subthreadName ? `&subthreadName=${subthreadName}` : '')
@@ -34,14 +34,13 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subthreadName }) => {
       const { data } = await axios.get(query)
       return data as ExtendedPost[]
     },
-
-    {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1
-      },
-      initialData: { pages: [initialPosts], pageParams: [1] },
-    }
-  )
+    getNextPageParam: (_, pages) => pages.length + 1,
+    initialPageParam: 1,
+    initialData: {
+      pages: [initialPosts],
+      pageParams: [1],
+    },
+  })
 
   useEffect(() => {
     if (entry?.isIntersecting) {
