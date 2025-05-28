@@ -1,5 +1,3 @@
-'use client'
-
 import { formatTimeToNow } from '@/lib/utils'
 import type { Post, User, Vote } from '@prisma/client'
 import { MessageSquare } from 'lucide-react'
@@ -29,6 +27,17 @@ const Post: FC<PostProps> = ({
   commentAmt,
 }) => {
   const pRef = useRef<HTMLParagraphElement>(null)
+
+  const hasBlocks = (content: any): content is { blocks: any[] } =>
+    typeof content === 'object' && content !== null && Array.isArray(content.blocks)
+
+  const normalBlocks = hasBlocks(post.content)
+    ? post.content.blocks.filter((block: any) => block.type !== 'attaches')
+    : []
+
+  const attachments = hasBlocks(post.content)
+    ? post.content.blocks.filter((block: any) => block.type === 'attaches')
+    : []
 
   return (
     <div className='rounded-md bg-white shadow'>
@@ -63,12 +72,36 @@ const Post: FC<PostProps> = ({
           <div
             className='relative text-sm max-h-40 w-full overflow-clip'
             ref={pRef}>
-            <EditorOutput content={post.content} />
+            <EditorOutput content={{ blocks: normalBlocks }} />
             {pRef.current?.clientHeight === 160 ? (
-              // blur bottom if content is too long
-              <div className='absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent'></div>
+              <div className='absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent' />
             ) : null}
           </div>
+
+          {/* ✅ Attachments rendered separately */}
+          {attachments?.length > 0 && (
+            <div className='mt-4 space-y-2'>
+              {attachments.map((block: any, i: number) => {
+                const file = block.data.file
+                return (
+                  <div
+                    key={i}
+                    className='p-3 rounded border bg-gray-50 text-sm'>
+                    <a
+                      href={file.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='text-blue-600 underline break-all'>
+                      📎 {block.data.title || file.name}
+                    </a>
+                    <p className='text-xs text-gray-500'>
+                      {(file.size / 1024).toFixed(2)} KB
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </div>
 
