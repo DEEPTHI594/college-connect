@@ -12,6 +12,7 @@ export default async function Home() {
       <h1 className='font-bold text-3xl md:text-4xl'>Welcome to CollegeConnect</h1>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
         {/* Feed (Only show when signed in) */}
+        {/* @ts-expect-error Server Component */}
         {session ? (
           <CustomFeed />
         ) : (
