@@ -86,7 +86,7 @@ const subthreadPostPage = async ({ params }: subthreadPostPageProps) => {
           <EditorOutput content={{ blocks: normalBlocks }} />
 
           {/* Attachments below */}
-          {attachments?.length > 0 && (
+          {attachments && attachments?.length > 0 && (
             <div className='mt-4 space-y-3'>
               <h2 className='text-sm font-medium text-gray-700'>Attachments:</h2>
               {attachments.map((block: any, i: number) => {
