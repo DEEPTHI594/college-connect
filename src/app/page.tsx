@@ -13,7 +13,7 @@ export default async function Home() {
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
         {/* Feed (Only show when signed in) */}
         {session ? (
-         {/* @ts-expect-error server component */}
+          // @ts-expect-error server component
           <CustomFeed />
         ) : (
           <div className='md:col-span-2 p-6 border rounded-lg bg-white shadow-sm'>
