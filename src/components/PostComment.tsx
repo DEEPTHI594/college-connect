@@ -45,8 +45,8 @@ const PostComment: FC<PostCommentProps> = ({
   useOnClickOutside(commentRef, () => {
     setIsReplying(false)
   })
-
-  const { mutate: postComment, isLoading } = useMutation({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { mutate: postComment} = useMutation({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId }
 
@@ -58,6 +58,7 @@ const PostComment: FC<PostCommentProps> = ({
     },
 
     onError: () => {
+      setIsLoading(false);
       return toast({
         title: 'Something went wrong.',
         description: "Comment wasn't created successfully. Please try again.",
@@ -65,6 +66,7 @@ const PostComment: FC<PostCommentProps> = ({
       })
     },
     onSuccess: () => {
+      setIsLoading(false);
       router.refresh()
       setIsReplying(false)
     },
@@ -140,6 +142,7 @@ const PostComment: FC<PostCommentProps> = ({
                 isLoading={isLoading}
                 onClick={() => {
                   if (!input) return
+                  setIsLoading(true);
                   postComment({
                     postId,
                     text: input,

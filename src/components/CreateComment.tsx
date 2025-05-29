@@ -21,8 +21,8 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
   const [input, setInput] = useState<string>('')
   const router = useRouter()
   const { loginToast } = useCustomToasts()
-
-  const { mutate: comment, isLoading } = useMutation({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { mutate: comment } = useMutation({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId }
 
@@ -34,6 +34,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
     },
 
     onError: (err) => {
+      setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           return loginToast()
@@ -47,6 +48,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
       })
     },
     onSuccess: () => {
+      setIsLoading(false);
       router.refresh()
       setInput('')
     },
@@ -68,7 +70,10 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
           <Button
             isLoading={isLoading}
             disabled={input.length === 0}
-            onClick={() => comment({ postId, text: input, replyToId })}>
+            onClick={() => {
+              setIsLoading(true);
+              comment({ postId, text: input, replyToId });
+            }}>
             Post
           </Button>
         </div>

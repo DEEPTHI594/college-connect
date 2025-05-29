@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/Button'
 import {
@@ -42,8 +43,8 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       name: user?.username || '',
     },
   })
-
-  const { mutate: updateUsername, isLoading } = useMutation({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { mutate: updateUsername} = useMutation({
     mutationFn: async ({ name }: FormData) => {
       const payload: FormData = { name }
 
@@ -51,6 +52,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       return data
     },
     onError: (err) => {
+      setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
@@ -68,6 +70,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       })
     },
     onSuccess: () => {
+      setIsLoading(false);
       toast({
         description: 'Your username has been updated.',
       })
@@ -78,7 +81,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   return (
     <form
       className={cn(className)}
-      onSubmit={handleSubmit((e) => updateUsername(e))}
+      onSubmit={()=>{setIsLoading(true);handleSubmit((e) => updateUsername(e))}}
       {...props}>
       <Card>
         <CardHeader>
@@ -113,3 +116,4 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     </form>
   )
 }
+
