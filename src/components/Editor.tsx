@@ -35,7 +35,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
       content: null,
     },
   })
-  const ref = useRef<EditorJS>()
+  const ref = useRef<any | null>()
   const _titleRef = useRef<HTMLTextAreaElement>(null)
   const router = useRouter()
   const [isMounted, setIsMounted] = useState<boolean>(false)
