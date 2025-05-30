@@ -3,26 +3,47 @@ import { HomeIcon } from "lucide-react";
 import Link from "next/link";
 import { getAuthSession } from "@/lib/auth";
 import CustomFeed from "@/components/CustomFeed";
+import GeneralFeed from "@/components/GeneralFeed";
+import { db } from "@/lib/db";
 
 export default async function Home() {
   const session = await getAuthSession();
+
+  let showCustomFeed = false;
+
+  if (session) {
+    const followedCommunities = await db.subscription.findMany({
+      where: {
+        userId: session.user.id,
+      },
+    });
+
+    showCustomFeed = followedCommunities.length > 0;
+  }
 
   return (
     <>
       <h1 className='font-bold text-3xl md:text-4xl'>Welcome to CollegeConnect</h1>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
-        {/* Feed (Only show when signed in) */}
-        {session ? (
-          // @ts-expect-error server component
-          <CustomFeed />
-        ) : (
-          <div className='md:col-span-2 p-6 border rounded-lg bg-white shadow-sm'>
-            <h2 className='text-xl font-semibold mb-2'>Discover, Connect, Engage</h2>
-            <p className='text-sm text-zinc-600'>
-              CollegeConnect helps students engage in communities, share ideas, and collaborate on campus topics. Sign up to get started!
-            </p>
-          </div>
-        )}
+        {/* Feed Area */}
+        <div className='md:col-span-2'>
+          {session ? (
+            showCustomFeed ? (
+              // @ts-expect-error server component
+              <CustomFeed />
+            ) : (
+              // @ts-expect-error server component
+              <GeneralFeed />
+            )
+          ) : (
+            <div className='p-6 border rounded-lg bg-white shadow-sm'>
+              <h2 className='text-xl font-semibold mb-2'>Discover, Connect, Engage</h2>
+              <p className='text-sm text-zinc-600'>
+                CollegeConnect helps students engage in communities, share ideas, and collaborate on campus topics. Sign up to get started!
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Sidebar Info */}
         <div className='overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last'>
