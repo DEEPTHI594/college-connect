@@ -81,7 +81,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   return (
     <form
       className={cn(className)}
-      onSubmit={()=>{setIsLoading(true);handleSubmit((e) => updateUsername(e))}}
+      onSubmit={handleSubmit((e) => {setIsLoading(true);updateUsername(e)})}
       {...props}>
       <Card>
         <CardHeader>
