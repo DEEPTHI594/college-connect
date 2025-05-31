@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/components/ui/Button";
 import { HomeIcon } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getAuthSession } from "@/lib/auth";
 import CustomFeed from "@/components/CustomFeed";
 import GeneralFeed from "@/components/GeneralFeed";
@@ -41,6 +42,15 @@ export default async function Home() {
               <p className='text-sm text-zinc-600'>
                 CollegeConnect helps students engage in communities, share ideas, and collaborate on campus topics. Sign up to get started!
               </p>
+              <div className='relative w-full h-64 md:h-96'>
+                <Image
+                  src='/home.jpg'
+                  alt='Homepage Illustration'
+                  fill
+                  className='object-cover rounded-lg'
+                  priority
+                />
+              </div>
             </div>
           )}
         </div>
