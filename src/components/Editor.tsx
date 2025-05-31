@@ -12,6 +12,7 @@ import { uploadFiles } from '@/lib/uploadthing'
 import { PostCreationRequest, PostValidator } from '@/lib/validators/post'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { Button } from '@/components/ui/Button'
 
 import '@/styles/editor.css'
 
@@ -39,6 +40,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
   const router = useRouter()
   const [isMounted, setIsMounted] = useState<boolean>(false)
   const pathname = usePathname()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { mutate: createPost } = useMutation({
     mutationFn: async ({
@@ -51,6 +53,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
       return data
     },
     onError: () => {
+      setIsLoading(false)
       return toast({
         title: 'Something went wrong.',
         description: 'Your post was not published. Please try again.',
@@ -58,6 +61,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
       })
     },
     onSuccess: () => {
+      setIsLoading(false)
       // turn pathname /r/mycommunity/submit into /r/mycommunity
       const newPathname = pathname.split('/').slice(0, -1).join('/')
       router.push(newPathname)
@@ -192,6 +196,7 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
   }, [isMounted, initializeEditor])
 
   async function onSubmit(data: FormData) {
+    setIsLoading(true)
     const blocks = await ref.current?.save()
 
     const payload: PostCreationRequest = {
@@ -236,6 +241,11 @@ export const Editor: React.FC<EditorProps> = ({ subthreadId }) => {
           </p>
         </div>
       </form>
+      <div className='w-full flex justify-end mt-4'>
+        <Button isLoading={isLoading} type='submit' className='w-full' form='subthread-post-form'>
+          Post
+        </Button>
+      </div>
     </div>
   )
 }

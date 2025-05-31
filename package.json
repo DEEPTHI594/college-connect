@@ -286,6 +286,7 @@
     "node-fetch": "^2.6.11",
     "node-gyp-build-optional-packages": "^5.2.2",
     "node-releases": "^2.0.12",
+    "nodemailer": "^6.10.1",
     "normalize-path": "^3.0.0",
     "normalize-range": "^0.1.2",
     "npm-run-path": "^5.1.0",
@@ -452,6 +453,7 @@
   "homepage": "https://github.com/DEEPTHI594/college-connect#readme",
   "devDependencies": {
     "@types/node": "22.15.21",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "18.3.22"
   }
 }
